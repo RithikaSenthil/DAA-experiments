@@ -1,0 +1,47 @@
+import java.util.*;
+public class ReachableNodes {
+
+ // Function to perform Iterative BFS using a Stack
+ public static void iterativeBFS(int[][] graph, int startNode) {
+ boolean[] visited = new boolean[graph.length];
+ Stack<Integer> stack = new Stack<>();
+
+ // Push the starting node onto the stack and mark it as visited
+ stack.push(startNode);
+ visited[startNode] = true;
+
+ System.out.print("Nodes reachable from node " + startNode + " are: ");
+
+ while (!stack.isEmpty()) {
+ int currentNode = stack.pop();
+ System.out.print(currentNode + " ");
+
+ // Visit all neighbors of the current node
+ for (int neighbor = 0; neighbor < graph.length; neighbor++) {
+ if (graph[currentNode][neighbor] == 1 && !visited[neighbor]) {
+ stack.push(neighbor);
+ visited[neighbor] = true;
+ }
+ }
+ }
+ System.out.println();
+ }
+
+ public static void main(String[] args) {
+ int[][] graph = {
+ {0, 1, 0, 0, 0, 0},
+ {0, 0, 1, 0, 0, 0},
+ {0, 0, 0, 1, 0, 0},
+ {0, 0, 0, 0, 1, 0},
+ {0, 0, 0, 0, 0, 1},
+ {0, 0, 0, 0, 0, 0}
+ };
+
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter the Starting Node in Digraph with nodes[0,1,2,3,4,5] : ");
+ int startNode = scanner.nextInt();
+ scanner.close();
+
+ iterativeBFS(graph, startNode);
+ }
+}
