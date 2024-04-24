@@ -1,0 +1,49 @@
+import java.util.Scanner;
+import java.util.Stack;
+public class ConnectedGraphCheck {
+ private int V;
+ private int[][] adjMatrix;
+ public ConnectedGraphCheck(int v) {
+ V = v;
+ adjMatrix = new int[V][V];
+ }
+ private void iterativeDFS(int startVertex, boolean[] visited) {
+ Stack<Integer> stack = new Stack<>();
+ stack.push(startVertex);
+ while (!stack.isEmpty()) {
+ int currentVertex = stack.pop();
+ visited[currentVertex] = true;
+ for (int i = 0; i < V; i++) {
+ if (adjMatrix[currentVertex][i] == 1 && !visited[i]) {
+ stack.push(i);
+ }
+ }
+ }
+ }
+ public boolean isConnected() {
+ boolean[] visited = new boolean[V];
+ iterativeDFS(0, visited);
+ for (boolean v : visited) {
+ if (!v)
+ return false;
+ }
+ return true;
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter Number of Nodes: ");
+ int n = scanner.nextInt();
+ ConnectedGraphCheck graph = new ConnectedGraphCheck(n);
+ System.out.println("Enter the adjacency Matrix:");
+ for (int i = 0; i < n; i++) {
+ for (int j = 0; j < n; j++) {
+ graph.adjMatrix[i][j] = scanner.nextInt();
+ }
+ }
+ if (graph.isConnected()) {
+ System.out.println("Is graph connected? Yes");
+ } else {
+ System.out.println("Is graph connected? No");
+ }
+ }
+}
