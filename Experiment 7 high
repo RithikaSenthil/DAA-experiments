@@ -1,0 +1,47 @@
+import java.util.Scanner;
+public class StronglyConnectedGraph {
+ private int V;
+ private int[][] adjMatrix;
+ public StronglyConnectedGraph(int V) {
+ this.V = V;
+ adjMatrix = new int[V][V];
+ }
+ private void addEdge(int from, int to) {
+ adjMatrix[from][to] = 1;
+ }
+ private void dfs(int vertex, boolean[] visited) {
+ visited[vertex] = true;
+ for (int i = 0; i < V; i++) {
+ if (adjMatrix[vertex][i] == 1 && !visited[i]) {
+ dfs(i, visited);
+ }
+ }
+ }
+ private boolean isStronglyConnected() {
+ for (int i = 0; i < V; i++) {
+ boolean[] visited = new boolean[V];
+ dfs(i, visited);
+ for (boolean visit : visited) {
+ if (!visit)
+ return false; // If any vertex is not visited, return false
+ }
+ }
+ return true;
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter Number of Nodes: ");
+ int n = scanner.nextInt();
+ StronglyConnectedGraph graph = new StronglyConnectedGraph(n);
+ System.out.println("Enter the adjacency Matrix:");
+ for (int i = 0; i < n; i++) {
+ for (int j = 0; j < n; j++) {
+ graph.adjMatrix[i][j] = scanner.nextInt();
+ }
+ }
+ if (graph.isStronglyConnected())
+ System.out.println("Is directed graph strongly connected? Yes");
+ else
+ System.out.println("Is directed graph strongly connected? No");
+ }
+}
