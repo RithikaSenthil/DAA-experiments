@@ -1,0 +1,89 @@
+import java.util.*;
+
+public class MergeSort {
+    public static void main(String[] args) {
+        // Generate 100 random 3-digit numbers
+        int[] numbers = generateRandomNumbers(100);
+
+        long totalTime = 0;
+
+        // Run Merge Sort 10 times
+        for (int i = 0; i < 10; i++) {
+            int[] copy = Arrays.copyOf(numbers, numbers.length);
+
+            long startTime = System.nanoTime();
+            mergeSort(copy, 0, copy.length - 1);
+            long endTime = System.nanoTime();
+
+            long duration = (endTime - startTime) / 1000000; // Convert to milliseconds
+            System.out.println("Time taken for iteration " + (i + 1) + ": " + duration + "ms");
+            totalTime += duration;
+        }
+
+        // Calculate average time
+        long averageTime = totalTime / 10;
+
+        System.out.println("Avg time of 10 iterations to sort using Merge sort: " + averageTime + "ms");
+    }
+
+    // Generate 100 random 3-digit numbers
+    private static int[] generateRandomNumbers(int count) {
+        Random random = new Random();
+        int[] numbers = new int[count];
+        for (int i = 0; i < count; i++) {
+            numbers[i] = random.nextInt(900) + 100; // Generate random 3-digit numbers
+        }
+        return numbers;
+    }
+
+    // Merge Sort implementation
+    private static void mergeSort(int[] arr, int l, int r) {
+        if (l < r) {
+            int m = (l + r) / 2;
+
+            mergeSort(arr, l, m);
+            mergeSort(arr, m + 1, r);
+
+            merge(arr, l, m, r);
+        }
+    }
+
+    private static void merge(int[] arr, int l, int m, int r) {
+        int n1 = m - l + 1;
+        int n2 = r - m;
+
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+
+        for (int i = 0; i < n1; ++i)
+            L[i] = arr[l + i];
+        for (int j = 0; j < n2; ++j)
+            R[j] = arr[m + 1 + j];
+
+        int i = 0, j = 0;
+
+        int k = l;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
+            } else {
+                arr[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
+        }
+
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
+        }
+    }
+}
