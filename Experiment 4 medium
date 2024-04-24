@@ -1,0 +1,36 @@
+import java.util.*;
+
+public class Knapsack {
+    public static int knapsack(int[] weights, int[] values, int capacity) {
+        int n = weights.length;
+        Integer[][] memo = new Integer[n][capacity + 1];
+        return knapsackHelper(weights, values, capacity, n - 1, memo);
+    }
+
+    private static int knapsackHelper(int[] weights, int[] values, int capacity, int index, Integer[][] memo) {
+        if (index < 0 || capacity <= 0)
+            return 0;
+
+        if (memo[index][capacity] != null)
+            return memo[index][capacity];
+
+        if (weights[index] > capacity)
+            memo[index][capacity] = knapsackHelper(weights, values, capacity, index - 1, memo);
+        else
+            memo[index][capacity] = Math.max(
+                    values[index] + knapsackHelper(weights, values, capacity - weights[index], index - 1, memo),
+                    knapsackHelper(weights, values, capacity, index - 1, memo)
+            );
+
+        return memo[index][capacity];
+    }
+
+    public static void main(String[] args) {
+        int[] weights = {10, 20, 30};
+        int[] values = {60, 100, 120};
+        int capacity = 50;
+
+        int maxValue = knapsack(weights, values, capacity);
+        System.out.println("Maximum value that can be obtained: " + maxValue);
+    }
+}
